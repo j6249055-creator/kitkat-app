@@ -1,0 +1,15 @@
+{
+  "name": "kitkat-app",
+  "version": "1.0.0",
+  "description": "KitKat Chocolate Earning and Products Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jpeg-js": "^0.4.4",
+    "jsqr": "^1.4.0"
+  }
+}

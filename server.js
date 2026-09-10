@@ -818,18 +818,3 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname,  'login.html'));
-});
-
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname,  'admin.html'));
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname,  'index.html'));
-});
-
-app.listen(PORT, () => {
-  console.log(`KitKat Platform Server running at http://localhost:${PORT}`);
-});
-module.exports = app;

@@ -810,23 +810,23 @@ app.post('/api/admin/settings', (req, res) => {
 
 // Direct Page Routes
 app.get('/pay', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'pay.html'));
+  res.sendFile(path.join(__dirname, 'pay.html'));
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+  res.sendFile(path.join(__dirname,  'login.html'));
 });
 
 app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+  res.sendFile(path.join(__dirname,  'login.html'));
 });
 
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+  res.sendFile(path.join(__dirname,  'admin.html'));
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname,  'index.html'));
 });
 
 app.listen(PORT, () => {

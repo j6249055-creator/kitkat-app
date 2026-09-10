@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(process.cwd(), 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Helper to generate referral code
 function generateRefCode() {
@@ -810,23 +810,23 @@ app.post('/api/admin/settings', (req, res) => {
 
 // Direct Page Routes
 app.get('/pay', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public', 'pay.html'));
+  res.sendFile(path.join(__dirname, 'public', 'pay.html'));
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public', 'login.html'));
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.get('/register', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public', 'login.html'));
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public', 'admin.html'));
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {

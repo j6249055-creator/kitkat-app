@@ -832,3 +832,4 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`KitKat Platform Server running at http://localhost:${PORT}`);
 });
+module.exports = app;

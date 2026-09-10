@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KitKat Platform - Admin Control Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    body {
+      background-color: #f1f3f7;
+      color: #1e293b;
+      min-height: 100vh;
+      padding-bottom: 50px;
+    }
+    .admin-header {
+      background: #a30a0d;
+      color: #ffffff;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(163, 10, 13, 0.25);
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    .btn-back-app {
+      background: #ffffff;
+      color: #a30a0d;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .admin-main {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+    /* Stats Grid */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border-left: 5px solid #a30a0d;
+    }
+    .stat-title {
+      font-size: 12.5px;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .stat-val {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .stat-badge {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #e11d48;
+    }
+
+    /* Tabs Bar */
+    .admin-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #a30a0d;
+      color: #ffffff;
+    }
+    .tab-btn .badge-count {
+      background: #ef4444;
+      color: #fff;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+    /* Card Panels */
+    .admin-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+      margin-bottom: 24px;
+    }
+    .card-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .search-input {
+      padding: 8px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 13.5px;
+      outline: none;
+      width: 250px;
+    }
+
+    /* Data Tables */
+    .table-responsive {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      text-align: left;
+    }
+    th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      padding: 12px 14px;
+      border-bottom: 2px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    tr:hover {
+      background: #f8fafc;
+    }
+
+    /* Buttons */
+    .btn-action {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: opacity 0.2s;
+    }
+    .btn-action:hover {
+      opacity: 0.85;
+    }
+    .btn-approve {
+      background: #10b981;
+      color: #fff;
+    }
+    .btn-reject {
+      background: #ef4444;
+      color: #fff;
+    }
+    .btn-edit {
+      background: #2563eb;
+      color: #fff;
+    }
+    .btn-view {
+      background: #8b5cf6;
+      color: #fff;
+    }
+    .btn-pwd {
+      background: #f59e0b;
+      color: #fff;
+    }
+
+    /* Settings Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+    }
+    .form-group input {
+      padding: 10px 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 13.5px;
+      outline: none;
+    }
+    .btn-save-settings {
+      background: #a30a0d;
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    /* Toast */
+    #toast-bar {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Admin Header -->
+  <header class="admin-header">
+    <div class="header-brand">
+      <iconify-icon icon="solar:shield-check-bold" style="font-size:26px;color:#ffc107;"></iconify-icon>
+      <span>KITKAT Admin Portal (Bharat Singh Dagur)</span>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <a href="/" target="_blank" class="btn-back-app">
+        <iconify-icon icon="solar:home-2-bold"></iconify-icon> Live App
+      </a>
+      <a href="/pay" target="_blank" class="btn-back-app" style="background:#5f259f;color:#fff;">
+        <iconify-icon icon="solar:qr-code-bold"></iconify-icon> Cashier QR
+      </a>
+    </div>
+  </header>
+
+  <main class="admin-main">
+
+    <!-- KPI Stats Cards -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-title">Total Users</div>
+        <div class="stat-val" id="kpiUsers">0</div>
+        <span class="stat-badge" style="color:#2563eb;">Registered accounts</span>
+      </div>
+
+      <div class="stat-card" style="border-color:#f59e0b;">
+        <div class="stat-title">Pending Recharges</div>
+        <div class="stat-val" id="kpiPendingDep" style="color:#d97706;">0</div>
+        <span class="stat-badge">Requires approval</span>
+      </div>
+
+      <div class="stat-card" style="border-color:#ef4444;">
+        <div class="stat-title">Pending Withdrawals</div>
+        <div class="stat-val" id="kpiPendingWth" style="color:#dc2626;">0</div>
+        <span class="stat-badge">Awaiting payout</span>
+      </div>
+
+      <div class="stat-card" style="border-color:#10b981;">
+        <div class="stat-title">Total Recharges Completed</div>
+        <div class="stat-val" id="kpiTotalRecharge" style="color:#059669;">₹0</div>
+        <span class="stat-badge" style="color:#059669;">Approved funds</span>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="admin-nav">
+      <button class="tab-btn active" onclick="switchTab('tabDeposits')">
+        <iconify-icon icon="solar:wallet-bold"></iconify-icon>
+        Pending Recharges <span class="badge-count" id="badgeDepCount">0</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('tabWithdrawals')">
+        <iconify-icon icon="solar:hand-money-bold"></iconify-icon>
+        Pending Withdrawals <span class="badge-count" id="badgeWthCount">0</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('tabUsers')">
+        <iconify-icon icon="solar:users-group-two-rounded-bold"></iconify-icon>
+        Users & Accounts Management
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('tabTransactions')">
+        <iconify-icon icon="solar:bill-list-bold"></iconify-icon>
+        All Platform Transactions
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('tabSettings')">
+        <iconify-icon icon="solar:settings-bold"></iconify-icon>
+        Payment Gateway & QR Settings
+      </button>
+    </nav>
+
+    <!-- ================= TAB 1: PENDING DEPOSITS ================= -->
+    <section id="tabDeposits" class="admin-card">
+      <div class="card-header-bar">
+        <h2 class="card-title">
+          <iconify-icon icon="solar:wallet-money-bold" style="color:#10b981;"></iconify-icon>
+          Pending Recharge Requests (PhonePe QR / UPI)
+        </h2>
+        <button class="btn-action btn-edit" onclick="loadAdminData()">
+          <iconify-icon icon="solar:refresh-bold"></iconify-icon> Refresh
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>User Phone</th>
+              <th>Amount</th>
+              <th>12-Digit UTR / Ref No</th>
+              <th>Payee Account</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="depositsTbody">
+            <tr><td colspan="6" style="text-align:center;color:#64748b;padding:24px;">Loading pending deposits...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: PENDING WITHDRAWALS ================= -->
+    <section id="tabWithdrawals" class="admin-card" style="display:none;">
+      <div class="card-header-bar">
+        <h2 class="card-title">
+          <iconify-icon icon="solar:hand-money-bold" style="color:#ef4444;"></iconify-icon>
+          Pending Cashout / Withdrawal Requests
+        </h2>
+        <button class="btn-action btn-edit" onclick="loadAdminData()">
+          <iconify-icon icon="solar:refresh-bold"></iconify-icon> Refresh
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>User Phone</th>
+              <th>Amount</th>
+              <th>Payout UPI ID / Bank Details</th>
+              <th>IFSC / Bank Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="withdrawalsTbody">
+            <tr><td colspan="6" style="text-align:center;color:#64748b;padding:24px;">Loading pending withdrawals...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: USERS & ACCOUNTS ================= -->
+    <section id="tabUsers" class="admin-card" style="display:none;">
+      <div class="card-header-bar">
+        <h2 class="card-title">
+          <iconify-icon icon="solar:users-group-rounded-bold" style="color:#2563eb;"></iconify-icon>
+          Registered Accounts & Team Balances
+        </h2>
+        <input type="text" id="userSearchInput" class="search-input" placeholder="Search by Phone / Name / ID..." oninput="filterUsersTable()">
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Phone Number</th>
+              <th>Balance</th>
+              <th>Total Recharged</th>
+              <th>Total Withdrawn</th>
+              <th>Invited By</th>
+              <th>Direct Team</th>
+              <th>Bound UPI / Bank</th>
+              <th>Manage</th>
+            </tr>
+          </thead>
+          <tbody id="usersTbody">
+            <tr><td colspan="9" style="text-align:center;color:#64748b;padding:24px;">Loading users...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: ALL TRANSACTIONS ================= -->
+    <section id="tabTransactions" class="admin-card" style="display:none;">
+      <div class="card-header-bar">
+        <h2 class="card-title">
+          <iconify-icon icon="solar:history-bold" style="color:#8b5cf6;"></iconify-icon>
+          Platform Transactions Ledger
+        </h2>
+        <button class="btn-action btn-edit" onclick="loadTransactions()">
+          <iconify-icon icon="solar:refresh-bold"></iconify-icon> Refresh
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Tx ID</th>
+              <th>User ID</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Details</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsTbody">
+            <tr><td colspan="7" style="text-align:center;color:#64748b;padding:24px;">Loading transactions...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= TAB 5: GATEWAY & SETTINGS ================= -->
+    <section id="tabSettings" class="admin-card" style="display:none;">
+      <div class="card-header-bar">
+        <h2 class="card-title">
+          <iconify-icon icon="solar:settings-bold" style="color:#a30a0d;"></iconify-icon>
+          Payment Gateway & Platform Configuration
+        </h2>
+      </div>
+
+      <form id="settingsForm" onsubmit="event.preventDefault(); saveSettings();">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Admin Payee UPI ID (Bharat Singh Dagur)</label>
+            <input type="text" id="setUpiId" value="7017398044-2@ibl" required>
+            <span style="font-size:11.5px;color:#64748b;">Payments from all users will arrive strictly on this UPI.</span>
+          </div>
+
+          <div class="form-group">
+            <label>Payee Name</label>
+            <input type="text" id="setPayeeName" value="BHARAT SINGH DAGUR" required>
+          </div>
+
+          <div class="form-group">
+            <label>Minimum Recharge (Deposit) Amount (₹)</label>
+            <input type="number" id="setMinDeposit" value="560" required>
+          </div>
+
+          <div class="form-group">
+            <label>Minimum Withdrawal Amount (₹)</label>
+            <input type="number" id="setMinWithdrawal" value="120" required>
+          </div>
+
+          <div class="form-group">
+            <label>Withdrawal Hours Window</label>
+            <input type="text" id="setWithdrawalTime" value="00:10-17:00" required>
+          </div>
+
+          <div class="form-group">
+            <label>Platform Launch Date</label>
+            <input type="text" id="setLaunchDate" value="11 September 2026" required>
+          </div>
+
+          <div class="form-group">
+            <label>Official Telegram Channel Link</label>
+            <input type="text" id="setTelegramLink" value="https://t.me/kitkatofficalchannel">
+          </div>
+
+          <div class="form-group">
+            <label>24/7 Customer Support Telegram Link</label>
+            <input type="text" id="setSupportTelegram" value="https://t.me/KitKatPremiumSupport">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-save-settings">Save & Update Settings</button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- MODAL: ADJUST USER BALANCE -->
+  <div class="modal-overlay" id="balanceModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Adjust User Wallet Balance</h3>
+        <button class="modal-close" onclick="closeModal('balanceModal')">&times;</button>
+      </div>
+      <form id="balanceForm" onsubmit="event.preventDefault(); submitBalanceAdjustment();">
+        <input type="hidden" id="adjustUserId">
+        <div style="margin-bottom:12px;font-size:13.5px;color:#475569;">
+          Target User: <strong id="adjustUserPhone" style="color:#0f172a;">---</strong>
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Action</label>
+          <select id="adjustAction" style="padding:10px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:13.5px;">
+            <option value="add">➕ Add / Credit Balance (₹)</option>
+            <option value="deduct">➖ Deduct / Debit Balance (₹)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Amount (₹)</label>
+          <input type="number" id="adjustAmount" placeholder="e.g. 560" required min="1">
+        </div>
+        <div class="form-group" style="margin-bottom:20px;">
+          <label>Reason / Note</label>
+          <input type="text" id="adjustReason" placeholder="e.g. Manual recharge credit / reward">
+        </div>
+        <button type="submit" class="btn-action btn-approve" style="width:100%;padding:12px;font-size:14px;justify-content:center;">
+          Confirm Adjustment
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: VIEW USER TEAM DOWNLINE -->
+  <div class="modal-overlay" id="teamModal">
+    <div class="modal-card" style="max-width:680px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Team Downline Explorer</h3>
+        <button class="modal-close" onclick="closeModal('teamModal')">&times;</button>
+      </div>
+      <div style="margin-bottom:16px;font-size:13.5px;color:#475569;">
+        User: <strong id="teamModalPhone" style="color:#0f172a;">---</strong> | Referral Code: <strong id="teamModalCode" style="color:#a30a0d;">---</strong>
+      </div>
+      <div id="teamModalContent">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RESET PASSWORD -->
+  <div class="modal-overlay" id="pwdModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Reset User Password</h3>
+        <button class="modal-close" onclick="closeModal('pwdModal')">&times;</button>
+      </div>
+      <form id="pwdForm" onsubmit="event.preventDefault(); submitPasswordReset();">
+        <input type="hidden" id="pwdUserId">
+        <div style="margin-bottom:12px;font-size:13.5px;color:#475569;">
+          Target User: <strong id="pwdUserPhone" style="color:#0f172a;">---</strong>
+        </div>
+        <div class="form-group" style="margin-bottom:18px;">
+          <label>New Password</label>
+          <input type="text" id="pwdNewInput" placeholder="Enter new password" required minlength="3">
+        </div>
+        <button type="submit" class="btn-action btn-pwd" style="width:100%;padding:12px;font-size:14px;justify-content:center;">
+          Update Password
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div id="toast-bar">Action updated!</div>
+
+  <script>
+    let allUsersData = [];
+
+    // Switch Admin Tabs
+    function switchTab(tabId) {
+      document.querySelectorAll('.admin-card').forEach(c => c.style.display = 'none');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).style.display = 'block';
+      event.currentTarget.classList.add('active');
+
+      if (tabId === 'tabTransactions') loadTransactions();
+      if (tabId === 'tabUsers') loadUsers();
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast-bar');
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 3000);
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('show');
+    }
+
+    // Load Admin Stats & Pending Queues
+    async function loadAdminData() {
+      try {
+        const res = await fetch('/api/admin/stats');
+        const data = await res.json();
+        if (data.code === 200) {
+          const s = data.stats;
+          document.getElementById('kpiUsers').innerText = s.totalUsers;
+          document.getElementById('kpiPendingDep').innerText = s.pendingDepositsCount;
+          document.getElementById('badgeDepCount').innerText = s.pendingDepositsCount;
+          document.getElementById('kpiPendingWth').innerText = s.pendingWithdrawalsCount;
+          document.getElementById('badgeWthCount').innerText = s.pendingWithdrawalsCount;
+          document.getElementById('kpiTotalRecharge').innerText = '₹' + s.totalRecharges.toLocaleString();
+
+          renderPendingDeposits(data.pendingDeposits);
+          renderPendingWithdrawals(data.pendingWithdrawals);
+
+          if (data.settings) {
+            document.getElementById('setUpiId').value = data.settings.upiId || '7017398044-2@ibl';
+            document.getElementById('setPayeeName').value = data.settings.payeeName || 'BHARAT SINGH DAGUR';
+            document.getElementById('setMinDeposit').value = data.settings.minDeposit || 560;
+            document.getElementById('setMinWithdrawal').value = data.settings.minWithdrawal || 120;
+            document.getElementById('setWithdrawalTime').value = data.settings.withdrawalTime || '00:10-17:00';
+            document.getElementById('setLaunchDate').value = data.settings.launchDate || '11 September 2026';
+            document.getElementById('setTelegramLink').value = data.settings.telegramLink || 'https://t.me/kitkatofficalchannel';
+            document.getElementById('setSupportTelegram').value = data.settings.supportTelegram || 'https://t.me/KitKatPremiumSupport';
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Render Pending Deposits
+    function renderPendingDeposits(list) {
+      const tbody = document.getElementById('depositsTbody');
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#10b981;padding:24px;font-weight:600;">✨ No pending recharge requests. All clear!</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map(tx => `
+        <tr>
+          <td>${new Date(tx.createdAt).toLocaleString()}</td>
+          <td><strong>${tx.userPhone || 'User ' + tx.userId}</strong></td>
+          <td><strong style="color:#059669;font-size:15px;">₹${tx.amount.toLocaleString()}</strong></td>
+          <td>
+            <code style="background:#f1f5f9;padding:4px 8px;border-radius:4px;font-weight:800;color:#5f259f;font-size:13px;">${tx.utr}</code>
+          </td>
+          <td>7017398044-2@ibl (Bharat Singh)</td>
+          <td>
+            <div style="display:flex;gap:6px;">
+              <button class="btn-action btn-approve" onclick="approveDeposit('${tx.id}')">
+                <iconify-icon icon="solar:check-circle-bold"></iconify-icon> Approve & Credit
+              </button>
+              <button class="btn-action btn-reject" onclick="rejectDeposit('${tx.id}')">
+                <iconify-icon icon="solar:close-circle-bold"></iconify-icon> Reject
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Render Pending Withdrawals
+    function renderPendingWithdrawals(list) {
+      const tbody = document.getElementById('withdrawalsTbody');
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#10b981;padding:24px;font-weight:600;">✨ No pending withdrawal requests. All clear!</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map(tx => {
+        const b = tx.bankDetails || {};
+        return `
+          <tr>
+            <td>${new Date(tx.createdAt).toLocaleString()}</td>
+            <td><strong>${tx.userPhone || 'User ' + tx.userId}</strong></td>
+            <td><strong style="color:#dc2626;font-size:15px;">₹${tx.amount.toLocaleString()}</strong></td>
+            <td>
+              <div><strong>Name:</strong> ${b.accountName || '-'}</div>
+              <div><strong>UPI:</strong> <code style="color:#2563eb;font-weight:700;">${b.upiId || '-'}</code></div>
+              <div><strong>A/C:</strong> ${b.accountNumber || '-'}</div>
+            </td>
+            <td>
+              <div>${b.bankName || 'UPI Payout'}</div>
+              <div style="font-size:12px;color:#64748b;">${b.ifsc || '-'}</div>
+            </td>
+            <td>
+              <div style="display:flex;gap:6px;">
+                <button class="btn-action btn-approve" onclick="approveWithdrawal('${tx.id}')">
+                  <iconify-icon icon="solar:card-send-bold"></iconify-icon> Mark Paid
+                </button>
+                <button class="btn-action btn-reject" onclick="rejectWithdrawal('${tx.id}')">
+                  <iconify-icon icon="solar:refresh-circle-bold"></iconify-icon> Reject & Refund
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Approve Deposit Action
+    async function approveDeposit(txId) {
+      if (!confirm('Are you sure you want to approve this deposit and credit the funds to user wallet?')) return;
+      try {
+        const res = await fetch('/api/admin/deposit/approve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ txId })
+        });
+        const d = await res.json();
+        showToast(d.msg);
+        loadAdminData();
+      } catch (e) {
+        showToast('Error approving deposit');
+      }
+    }
+
+    // Reject Deposit Action
+    async function rejectDeposit(txId) {
+      const reason = prompt('Reason for rejection:', 'Payment not received / Invalid UTR');
+      if (!reason) return;
+      try {
+        const res = await fetch('/api/admin/deposit/reject', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ txId, reason })
+        });
+        const d = await res.json();
+        showToast(d.msg);
+        loadAdminData();
+      } catch (e) {
+        showToast('Error rejecting deposit');
+      }
+    }
+
+    // Approve Withdrawal Action
+    async function approveWithdrawal(txId) {
+      const ref = prompt('Enter payout transfer reference ID:', 'Paid via PhonePe / IMPS');
+      if (!ref) return;
+      try {
+        const res = await fetch('/api/admin/withdraw/approve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ txId, payoutRef: ref })
+        });
+        const d = await res.json();
+        showToast(d.msg);
+        loadAdminData();
+      } catch (e) {
+        showToast('Error completing withdrawal');
+      }
+    }
+
+    // Reject Withdrawal Action
+    async function rejectWithdrawal(txId) {
+      const reason = prompt('Reason for rejection (amount will be refunded to user wallet):', 'Incorrect bank account or UPI');
+      if (!reason) return;
+      try {
+        const res = await fetch('/api/admin/withdraw/reject', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ txId, reason })
+        });
+        const d = await res.json();
+        showToast(d.msg);
+        loadAdminData();
+      } catch (e) {
+        showToast('Error rejecting withdrawal');
+      }
+    }
+
+    // Load All Users
+    async function loadUsers() {
+      try {
+        const res = await fetch('/api/admin/users');
+        const d = await res.json();
+        if (d.code === 200) {
+          allUsersData = d.users;
+          renderUsersTable(allUsersData);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderUsersTable(users) {
+      const tbody = document.getElementById('usersTbody');
+      if (!users || users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:24px;">No users found.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = users.map(u => {
+        const b = u.bankDetails || {};
+        const bankStr = b.upiId ? `UPI: ${b.upiId}` : (b.accountNumber ? `${b.bankName} (${b.accountNumber})` : '<span style="color:#94a3b8;">Not bound</span>');
+        return `
+          <tr>
+            <td><strong>#${u.id}</strong></td>
+            <td><strong>${u.phone}</strong><br><span style="font-size:11px;color:#64748b;">${u.name}</span></td>
+            <td><strong style="color:#059669;font-size:14px;">₹${(u.balance || 0).toLocaleString()}</strong></td>
+            <td>₹${(u.totalRecharge || 0).toLocaleString()}</td>
+            <td>₹${(u.totalWithdraw || 0).toLocaleString()}</td>
+            <td><code>${u.refBy || 'ADMIN'}</code></td>
+            <td><span class="badge-count" style="background:#2563eb;">${u.downlineCount || 0} users</span></td>
+            <td style="font-size:12px;">${bankStr}</td>
+            <td>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <button class="btn-action btn-edit" title="Adjust Balance" onclick="openBalanceModal(${u.id}, '${u.phone}')">
+                  <iconify-icon icon="solar:wallet-bold"></iconify-icon> Balance
+                </button>
+                <button class="btn-action btn-view" title="View Downlines" onclick="openTeamModal(${u.id})">
+                  <iconify-icon icon="solar:users-group-two-rounded-bold"></iconify-icon> Team
+                </button>
+                <button class="btn-action btn-pwd" title="Reset Password" onclick="openPwdModal(${u.id}, '${u.phone}')">
+                  <iconify-icon icon="solar:key-bold"></iconify-icon> Pwd
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterUsersTable() {
+      const q = document.getElementById('userSearchInput').value.toLowerCase().trim();
+      if (!q) {
+        renderUsersTable(allUsersData);
+        return;
+      }
+      const filtered = allUsersData.filter(u => 
+        (u.phone && u.phone.toLowerCase().includes(q)) ||
+        (u.name && u.name.toLowerCase().includes(q)) ||
+        (u.id && u.id.toString().includes(q))
+      );
+      renderUsersTable(filtered);
+    }
+
+    // Balance Modal
+    function openBalanceModal(userId, phone) {
+      document.getElementById('adjustUserId').value = userId;
+      document.getElementById('adjustUserPhone').innerText = phone;
+      document.getElementById('adjustAmount').value = '';
+      document.getElementById('adjustReason').value = '';
+      document.getElementById('balanceModal').classList.add('show');
+    }
+
+    async function submitBalanceAdjustment() {
+      const userId = document.getElementById('adjustUserId').value;
+      const action = document.getElementById('adjustAction').value;
+      const amount = document.getElementById('adjustAmount').value;
+      const reason = document.getElementById('adjustReason').value;
+
+      try {
+        const res = await fetch('/api/admin/balance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, action, amount, reason })
+        });
+        const d = await res.json();
+        showToast(d.msg);
+        closeModal('balanceModal');
+        loadUsers();
+        loadAdminData();
+      } catch (e) {
+        showToast('Error adjusting balance');
+      }
+    }
+
+    // Team Downline Modal
+    async function openTeamModal(userId) {
+      try {
+        const res = await fetch(`/api/admin/user/${userId}/team`);
+        const d = await res.json();
+        if (d.code === 200) {
+          document.getElementById('teamModalPhone').innerText = d.user.phone;
+          document.getElementById('teamModalCode').innerText = d.user.refCode;
+
+          let html = `
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+              <div style="background:#f8fafc;padding:10px;border-radius:8px;text-align:center;">
+                <div style="font-size:12px;color:#64748b;">LV.1 Members (25%)</div>
+                <div style="font-size:18px;font-weight:800;color:#2563eb;">${d.level1.length}</div>
+              </div>
+              <div style="background:#f8fafc;padding:10px;border-radius:8px;text-align:center;">
+                <div style="font-size:12px;color:#64748b;">LV.2 Members (3%)</div>
+                <div style="font-size:18px;font-weight:800;color:#7c3aed;">${d.level2.length}</div>
+              </div>
+              <div style="background:#f8fafc;padding:10px;border-radius:8px;text-align:center;">
+                <div style="font-size:12px;color:#64748b;">LV.3 Members (2%)</div>
+                <div style="font-size:18px;font-weight:800;color:#db2777;">${d.level3.length}</div>
+              </div>
+            </div>
+            <h4 style="font-size:14px;margin-bottom:8px;color:#1e293b;">Direct Level 1 Subordinates:</h4>
+          `;
+
+          if (d.level1.length === 0) {
+            html += `<p style="color:#94a3b8;font-size:13px;">No direct subordinates registered yet.</p>`;
+          } else {
+            html += `
+              <table style="font-size:12.5px;">
+                <thead>
+                  <tr><th>Phone</th><th>Recharged</th><th>Balance</th><th>Joined Date</th></tr>
+                </thead>
+                <tbody>
+                  ${d.level1.map(m => `
+                    <tr>
+                      <td><strong>${m.phone}</strong></td>
+                      <td>₹${(m.totalRecharge || 0).toLocaleString()}</td>
+                      <td>₹${(m.balance || 0).toLocaleString()}</td>
+                      <td>${new Date(m.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            `;
+          }
+
+          document.getElementById('teamModalContent').innerHTML = html;
+          document.getElementById('teamModal').classList.add('show');
+        }
+      } catch (e) {
+        showToast('Error loading team downline');
+      }
+    }
+
+    // Password Modal
+    function openPwdModal(userId, phone) {
+      document.getElementById('pwdUserId').value = userId;
+      document.getElementById('pwdUserPhone').innerText = phone;
+      document.getElementById('pwdNewInput').value = '';
+      document.getElementById('pwdModal').classList.add('show');
+    }
+
+    async function submitPasswordReset() {
+      const userId = document.getElementById('pwdUserId').value;
+      const newPassword = document.getElementById('pwdNewInput').value;
+      try {
+        const res = await fetch('/api/admin/user/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, newPassword })
+        });
+        const d = await res.json();
+        showToast(d.msg);
+        closeModal('pwdModal');
+      } catch (e) {
+        showToast('Error resetting password');
+      }
+    }
+
+    // Load Transactions
+    async function loadTransactions() {
+      try {
+        const res = await fetch('/api/admin/transactions');
+        const d = await res.json();
+        if (d.code === 200) {
+          const tbody = document.getElementById('transactionsTbody');
+          if (d.transactions.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px;">No transactions recorded.</td></tr>`;
+            return;
+          }
+          tbody.innerHTML = d.transactions.map(t => {
+            const statusColor = t.status === 'completed' || t.status === 'approved' ? '#059669' : (t.status === 'pending' ? '#d97706' : '#dc2626');
+            return `
+              <tr>
+                <td><code>${t.id}</code></td>
+                <td>#${t.userId}</td>
+                <td><span style="font-weight:700;text-transform:uppercase;font-size:11.5px;">${t.type}</span></td>
+                <td><strong style="color:${t.amount > 0 ? '#059669' : '#dc2626'};">${t.amount > 0 ? '+' : ''}₹${Math.abs(t.amount).toLocaleString()}</strong></td>
+                <td><span style="color:${statusColor};font-weight:700;">${t.status}</span></td>
+                <td>${t.details || '-'}</td>
+                <td style="font-size:12px;color:#64748b;">${new Date(t.createdAt).toLocaleString()}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Save Settings
+    async function saveSettings() {
+      const payload = {
+        upiId: document.getElementById('setUpiId').value.trim(),
+        payeeName: document.getElementById('setPayeeName').value.trim(),
+        minDeposit: document.getElementById('setMinDeposit').value,
+        minWithdrawal: document.getElementById('setMinWithdrawal').value,
+        withdrawalTime: document.getElementById('setWithdrawalTime').value.trim(),
+        launchDate: document.getElementById('setLaunchDate').value.trim(),
+        telegramLink: document.getElementById('setTelegramLink').value.trim(),
+        supportTelegram: document.getElementById('setSupportTelegram').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const d = await res.json();
+        showToast(d.msg || 'Settings saved successfully!');
+      } catch (e) {
+        showToast('Error saving settings');
+      }
+    }
+
+    // Init
+    loadAdminData();
+  </script>
+</body>
+</html>

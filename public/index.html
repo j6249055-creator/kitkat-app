@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KitKat Long-Term Earning Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <div class="page-container">
+
+    <!-- Top Sticky Red Header (Screenshot 3 Matching) -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="header-menu-icon" onclick="openModal('sideMenuModal')">
+          <iconify-icon icon="solar:hamburger-menu-linear"></iconify-icon>
+        </div>
+        <div class="header-logo-wrap">
+          <img src="/img/kitkat_pack.jpg" alt="KitKat Logo" style="border-radius:4px;height:26px;object-fit:cover;">
+          <span style="color:#ffffff;font-size:17px;font-weight:900;margin-left:6px;letter-spacing:0.5px;">KitKat</span>
+        </div>
+      </div>
+      <div class="header-right-icons">
+        <a href="https://t.me/KitKatPremiumSupport" target="_blank" class="header-icon-btn" title="24/7 Customer Support">
+          <iconify-icon icon="solar:headphones-round-sound-bold"></iconify-icon>
+        </a>
+        <a href="https://t.me/kitkatofficalchannel" target="_blank" class="header-icon-btn" title="Official Telegram Channel">
+          <iconify-icon icon="logos:telegram"></iconify-icon>
+        </a>
+        <div class="header-icon-btn" onclick="openUserOrders()" title="My Orders / Cart">
+          <iconify-icon icon="solar:cart-large-2-bold"></iconify-icon>
+          <span class="header-cart-badge" id="headerCartCount">0</span>
+        </div>
+        <div class="header-icon-btn" onclick="openModal('launchModal')" title="Special Offers">
+          <iconify-icon icon="solar:gift-bold" style="color:#ffc107;"></iconify-icon>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= VIEW 1: HOME (Screenshots 3 & 4 Matching) ================= -->
+    <main id="view-home" class="app-view-tab">
+      
+      <!-- Top Hero Banner -->
+      <div class="hero-banner-wrap">
+        <img src="/img/kitkat_pack.jpg" alt="KitKat Have a Break Banner" style="max-height:170px;object-fit:cover;">
+      </div>
+
+      <!-- 4 Quick Action Buttons Card -->
+      <div class="quick-action-card">
+        <div class="action-btn-item" onclick="openRechargeView()">
+          <div class="action-icon-circle">
+            <iconify-icon icon="solar:wallet-bold"></iconify-icon>
+          </div>
+          <span class="action-btn-label">Recharge</span>
+        </div>
+
+        <div class="action-btn-item" onclick="openWithdrawView()">
+          <div class="action-icon-circle">
+            <iconify-icon icon="solar:hand-money-bold"></iconify-icon>
+          </div>
+          <span class="action-btn-label">Withdraw</span>
+        </div>
+
+        <a href="https://t.me/KitKatPremiumSupport" target="_blank" class="action-btn-item">
+          <div class="action-icon-circle">
+            <iconify-icon icon="solar:headphones-round-sound-bold"></iconify-icon>
+          </div>
+          <span class="action-btn-label">Online</span>
+        </a>
+
+        <a href="https://t.me/kitkatofficalchannel" target="_blank" class="action-btn-item">
+          <div class="action-icon-circle">
+            <iconify-icon icon="logos:telegram"></iconify-icon>
+          </div>
+          <span class="action-btn-label">Channel</span>
+        </a>
+      </div>
+
+      <!-- Category Title Bar -->
+      <div class="category-tabs-wrap">
+        <button class="category-tab-btn active" id="tabLongTermBtn" style="width:100%;">
+          Long-term income
+        </button>
+      </div>
+
+      <!-- Products Cards List -->
+      <div class="product-cards-container" id="productsContainer">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </main>
+
+    <!-- ================= VIEW 2: RECHARGE (Screenshot 1 Matching) ================= -->
+    <section id="view-recharge" class="app-view-tab trans-page-wrap" style="display:none;">
+      
+      <!-- Top Toggle Tabs: Recharge / Withdraw -->
+      <div class="trans-top-tabs">
+        <div class="trans-top-tab active" onclick="openRechargeView()">
+          <iconify-icon icon="solar:wallet-bold"></iconify-icon> Recharge
+        </div>
+        <div class="trans-top-tab inactive" onclick="openWithdrawView()">
+          <iconify-icon icon="solar:hand-money-bold"></iconify-icon> Withdraw
+        </div>
+      </div>
+
+      <!-- Quick Amount Chips -->
+      <div class="chips-grid">
+        <div class="chip-amount-btn active" onclick="selectRechargeChip(560, this)">560</div>
+        <div class="chip-amount-btn" onclick="selectRechargeChip(2300, this)">2300</div>
+        <div class="chip-amount-btn" onclick="selectRechargeChip(980, this)">980</div>
+        <div class="chip-amount-btn" onclick="selectRechargeChip(1400, this)">1400</div>
+        <div class="chip-amount-btn" onclick="selectRechargeChip(2100, this)">2100</div>
+        <div class="chip-amount-btn" onclick="selectRechargeChip(3200, this)">3200</div>
+      </div>
+
+      <!-- Balance & Input Card -->
+      <div class="balance-display-card">
+        <div class="balance-title-row">
+          Balance : <strong style="color:var(--red-primary);">₹ <span class="val-user-balance">0.00</span></strong>
+        </div>
+        <div class="amount-input-box">
+          <span>₹</span>
+          <input type="number" id="inputRechargeAmount" placeholder="Please enter the recharge amount" value="560" oninput="updatePayButton()">
+        </div>
+      </div>
+
+      <!-- Payment Channels List -->
+      <div class="channel-card">
+        <div class="channel-row selected" onclick="selectChannel(this)">
+          <div class="channel-checkbox">✓</div>
+          <span>Pay-Top A</span>
+        </div>
+        <div class="channel-row" onclick="selectChannel(this)">
+          <div class="channel-checkbox"></div>
+          <span>Pay-Top B</span>
+        </div>
+        <div class="channel-row" onclick="selectChannel(this)">
+          <div class="channel-checkbox"></div>
+          <span>Pay-Top C</span>
+        </div>
+      </div>
+
+      <!-- Pay Button (Opens Cashier fast.to-wallet.com clone) -->
+      <button class="btn-buy-now" id="btnPaySubmit" style="margin-bottom:20px;" onclick="goToCashier()">
+        Pay 560
+      </button>
+
+      <!-- Rules Boxes -->
+      <div class="rule-box-item">
+        Minimum top-up: 560 RS
+      </div>
+      <div class="rule-box-item">
+        Please obtain the latest UPI account for each top-up.
+      </div>
+      <div class="rule-box-item">
+        Submit your 12-digit UTR number immediately after top-up.
+      </div>
+    </section>
+
+    <!-- ================= VIEW 3: WITHDRAW ================= -->
+    <section id="view-withdraw" class="app-view-tab trans-page-wrap" style="display:none;">
+      <div class="trans-top-tabs">
+        <div class="trans-top-tab inactive" onclick="openRechargeView()">
+          <iconify-icon icon="solar:wallet-bold"></iconify-icon> Recharge
+        </div>
+        <div class="trans-top-tab active" onclick="openWithdrawView()">
+          <iconify-icon icon="solar:hand-money-bold"></iconify-icon> Withdraw
+        </div>
+      </div>
+
+      <div class="balance-display-card">
+        <div class="balance-title-row">
+          Withdrawable Balance : <strong style="color:#10b981;font-size:16px;">₹ <span class="val-user-balance">0.00</span></strong>
+        </div>
+        <div class="amount-input-box">
+          <span>₹</span>
+          <input type="number" id="inputWithdrawAmount" placeholder="Enter amount (Min ₹120)" min="120">
+        </div>
+      </div>
+
+      <!-- Bound Bank / UPI Info -->
+      <div class="balance-display-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span style="font-size:13.5px;font-weight:700;color:#1e293b;">Receiving Bank / UPI Account</span>
+          <button onclick="openModal('bankModal')" style="border:none;background:none;color:var(--red-primary);font-size:12.5px;font-weight:800;cursor:pointer;">
+            Edit Account
+          </button>
+        </div>
+        <div id="withdrawBankDetailsText" style="font-size:13px;color:#4b5563;line-height:1.6;">
+          Loading account details...
+        </div>
+      </div>
+
+      <button class="btn-buy-now" style="margin-bottom:20px;" onclick="submitWithdrawal()">
+        Confirm Withdrawal
+      </button>
+
+      <div class="rule-box-item">
+        ✅ Minimum withdrawal: 120 RS
+      </div>
+      <div class="rule-box-item">
+        ⏰ Withdrawal time: 00:10 - 17:00
+      </div>
+      <div class="rule-box-item">
+        ⚡ All plans offer daily income and daily withdrawals.
+      </div>
+    </section>
+
+    <!-- ================= VIEW 4: TEAM (Screenshot 2 Matching) ================= -->
+    <section id="view-team" class="app-view-tab" style="display:none;">
+      <div class="team-header-card">
+        <div class="team-header-title">Team Partners</div>
+        <div class="team-user-masked-phone" id="teamUserMaskedPhone">740****838</div>
+        <div class="team-total-recharge-lbl">Team recharge</div>
+        <div class="team-total-recharge-val" id="teamTotalRechargeNum">₹ 0.00</div>
+      </div>
+
+      <!-- Team Size & Total Income Card -->
+      <div class="team-summary-pill-card">
+        <div class="team-sum-item">
+          <div style="font-size:12px;color:#6b7280;font-weight:700;">Team size</div>
+          <div class="team-sum-val" id="teamTotalMembersNum">0</div>
+        </div>
+        <div class="team-sum-item">
+          <div style="font-size:12px;color:#6b7280;font-weight:700;">Total income</div>
+          <div class="team-sum-val" id="teamTotalCommissionNum">₹ 0.00</div>
+        </div>
+      </div>
+
+      <!-- 3 Tabs: LV.1, LV.2, LV.3 -->
+      <div class="team-tabs-bar">
+        <div class="team-tab-btn active" id="tabLv1Btn" onclick="switchTeamLevelTab(1)">LV.1 (25%)</div>
+        <div class="team-tab-btn" id="tabLv2Btn" onclick="switchTeamLevelTab(2)">LV.2 (3%)</div>
+        <div class="team-tab-btn" id="tabLv3Btn" onclick="switchTeamLevelTab(3)">LV.3 (2%)</div>
+      </div>
+
+      <!-- 4 Tier Metric Cards -->
+      <div class="team-tier-metrics-grid">
+        <div class="tier-metric-card">
+          <div class="tier-metric-num" id="tierTeamSizeNum">0</div>
+          <div class="tier-metric-label">Team size</div>
+        </div>
+        <div class="tier-metric-card">
+          <div class="tier-metric-num" id="tierInvestorsNum">0</div>
+          <div class="tier-metric-label">Number of investors</div>
+        </div>
+        <div class="tier-metric-card">
+          <div class="tier-metric-num" id="tierRechargeNum">₹ 0</div>
+          <div class="tier-metric-label">Team recharge</div>
+        </div>
+        <div class="tier-metric-card">
+          <div class="tier-metric-num" id="tierCommissionNum">₹ 0</div>
+          <div class="tier-metric-label">Purchase commission</div>
+        </div>
+      </div>
+
+      <div class="team-action-card-btn" onclick="toggleDownlineList()">
+        <span id="labelViewAllLv">View all LV.1 Subordinates</span>
+      </div>
+
+      <!-- Downline Subordinates List -->
+      <div id="subordinatesListWrap" style="display:none;padding:0 14px 16px;">
+        <div id="subordinatesListContent">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 5: SHARE (Screenshot 5 Matching) ================= -->
+    <section id="view-share" class="app-view-tab share-section-wrap" style="display:none;">
+      
+      <!-- QR Card -->
+      <div class="share-qr-card">
+        <h3>My QR code</h3>
+        <div class="share-qr-image-wrap">
+          <div id="shareQrCanvasWrap"></div>
+        </div>
+        <p style="font-size:12px;color:#6b7280;font-weight:600;">Scan with phone camera or share with friends</p>
+      </div>
+
+      <!-- Share Links Card -->
+      <div class="share-info-card">
+        <label style="font-size:12px;font-weight:700;color:#4b5563;margin-bottom:4px;display:block;">Invitation Link</label>
+        <div class="copy-input-group">
+          <span class="copy-input-text" id="displayRefLink">https://kitkat.app/register?ref=...</span>
+          <button class="btn-mini-copy" onclick="copyRefLink()">Copy</button>
+        </div>
+
+        <label style="font-size:12px;font-weight:700;color:#4b5563;margin-bottom:4px;display:block;">Invitation Code</label>
+        <div class="copy-input-group">
+          <span class="copy-input-text" id="displayRefCode">...</span>
+          <button class="btn-mini-copy" onclick="copyRefCode()">Copy</button>
+        </div>
+
+        <div class="share-tier-pill">Level 1 commission = 25%</div>
+        <div class="share-tier-pill">Level 2 commission = 3%</div>
+        <div class="share-tier-pill">Level 3 commission = 2%</div>
+
+        <div class="share-notice-box">
+          Team building opportunities are available; contact customer service for extra rewards.
+          <br><br>
+          <a href="https://t.me/KitKatPremiumSupport" target="_blank" style="color:var(--red-primary);font-weight:800;">
+            💬 Chat with Customer Service (@KitKatPremiumSupport)
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 6: PROFILE "MY" (Screenshot 1 Matching) ================= -->
+    <section id="view-profile" class="app-view-tab" style="display:none;">
+      
+      <!-- Top Red Banner -->
+      <div class="profile-hero-header">
+        <div class="profile-user-row">
+          <div class="profile-avatar-circle">
+            <img src="/img/kitkat_pack.jpg" alt="KitKat Avatar">
+          </div>
+          <div class="profile-user-info">
+            <h3 id="profileUserIdDisplay">ID : 7409601838</h3>
+            <span class="profile-vip-badge">VIP0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Metrics Card -->
+      <div class="profile-3metrics-card">
+        <div class="profile-metric-col">
+          <div class="p-metric-val">₹ <span class="val-user-balance">0.00</span></div>
+          <div class="p-metric-lbl">Balance</div>
+        </div>
+        <div class="profile-metric-col">
+          <div class="p-metric-val">₹ <span id="valUserTotalIncome">0.00</span></div>
+          <div class="p-metric-lbl">Total Income</div>
+        </div>
+        <div class="profile-metric-col">
+          <div class="p-metric-val">₹ <span id="valUserTotalRecharge">0.00</span></div>
+          <div class="p-metric-lbl">Recharge</div>
+        </div>
+      </div>
+
+      <!-- 8 Grid Menu Cards (Screenshot 1 Matching) -->
+      <div class="profile-8grid">
+        
+        <!-- 1. Devices (Active Plans) -->
+        <div class="grid-menu-card" onclick="openUserOrders()">
+          <div class="grid-menu-icon">
+            <iconify-icon icon="solar:server-square-bold"></iconify-icon>
+          </div>
+          <span class="grid-menu-title">Devices</span>
+        </div>
+
+        <!-- 2. Personal Information -->
+        <div class="grid-menu-card" onclick="openModal('bankModal')">
+          <div class="grid-menu-icon">
+            <iconify-icon icon="solar:user-id-bold"></iconify-icon>
+          </div>
+          <span class="grid-menu-title">Personal information</span>
+        </div>
+
+        <!-- 3. Income Details -->
+        <div class="grid-menu-card" onclick="showHistory('daily_profit')">
+          <div class="grid-menu-icon">
+            <iconify-icon icon="solar:hand-money-bold"></iconify-icon>
+          </div>
+          <span class="grid-menu-title">Income details</span>
+        </div>
+
+        <!-- 4. Withdrawal Details -->
+        <div class="grid-menu-card" onclick="showHistory('withdraw')">
+          <div class="grid-menu-icon">
+            <iconify-icon icon="solar:card-send-bold"></iconify-icon>
+          </div>
+          <span class="grid-menu-title">Withdrawal details</span>
+        </div>
+
+        <!-- 5. Recharge Details -->
+        <div class="grid-menu-card" onclick="showHistory('deposit')">
+          <div class="grid-menu-icon">
+            <iconify-icon icon="solar:wallet-money-bold"></iconify-icon>
+          </div>
+          <span class="grid-menu-title">Recharge details</span>
+        </div>
+
+        <!-- 6. About Us -->
+        <div class="grid-menu-card" onclick="openModal('aboutModal')">
+          <div class="grid-menu-icon">
+            <iconify-icon icon="solar:city-bold"></iconify-icon>
+          </div>
+          <span class="grid-menu-title">About us</span>
+        </div>
+
+        <!-- 7. Download -->
+        <div class="grid-menu-card" onclick="showToast('KitKat official Android APK is preparing...')">
+          <div class="grid-menu-icon">
+            <iconify-icon icon="solar:download-square-bold"></iconify-icon>
+          </div>
+          <span class="grid-menu-title">Download</span>
+        </div>
+
+        <!-- 8. Log out -->
+        <div class="grid-menu-card" onclick="logoutUser()">
+          <div class="grid-menu-icon" style="color:#ef4444;">
+            <iconify-icon icon="solar:power-bold"></iconify-icon>
+          </div>
+          <span class="grid-menu-title" style="color:#ef4444;">Log out</span>
+        </div>
+
+      </div>
+
+      <!-- Admin Panel Link -->
+      <div style="margin:0 14px 20px;text-align:center;">
+        <a href="/admin" target="_blank" style="font-size:12.5px;color:#a30a0d;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+          <iconify-icon icon="solar:shield-check-bold"></iconify-icon> Admin Control Panel
+        </a>
+      </div>
+    </section>
+
+    <!-- Bottom Red Navigation Bar (Screenshots 1, 2, 4 Matching) -->
+    <nav class="app-bottom-nav">
+      <div class="nav-bar-item active" id="navHome" onclick="switchNav('home')">
+        <iconify-icon icon="solar:home-2-bold"></iconify-icon>
+        <span>Home</span>
+      </div>
+
+      <div class="nav-bar-item" id="navShare" onclick="switchNav('share')">
+        <iconify-icon icon="solar:square-share-line-bold"></iconify-icon>
+        <span>Share</span>
+      </div>
+
+      <div class="nav-bar-item" id="navTeam" onclick="switchNav('team')">
+        <iconify-icon icon="solar:users-group-two-rounded-bold"></iconify-icon>
+        <span>Team</span>
+      </div>
+
+      <div class="nav-bar-item" id="navProfile" onclick="switchNav('profile')">
+        <iconify-icon icon="solar:user-bold"></iconify-icon>
+        <span>My</span>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- ================= MODAL: LAUNCH FLYER POPUP (Screenshot 6 Matching) ================= -->
+  <div class="app-modal-backdrop" id="launchModal">
+    <div class="app-modal-content">
+      <button class="modal-close-round-btn" onclick="closeModal('launchModal')">&times;</button>
+      
+      <div class="launch-flyer-header">
+        Nestle KitKat
+      </div>
+
+      <img src="/img/kitkat_pack.jpg" alt="KitKat Launch Flyer" class="launch-flyer-img" style="max-height:160px;object-fit:cover;">
+
+      <div class="launch-flyer-body">
+        <h4 style="font-size:16px;font-weight:900;color:#111;">Welcome to KitKat</h4>
+        
+        <div class="launch-red-highlight">
+          120 rs given as a gift with first purchase
+        </div>
+
+        <p><strong>Minimum deposit:</strong> 560 rs</p>
+        <p><strong>Minimum withdrawal:</strong> 120 rs</p>
+        <p><strong>Withdrawal time:</strong> 00:10-17:00</p>
+        <p><strong>Platform Launch Date:</strong> 11 September 2026</p>
+        
+        <p style="margin:8px 0;font-weight:700;color:#374151;">
+          All plans offer daily income and daily withdrawals.
+        </p>
+
+        <p style="font-weight:800;color:#111;margin-top:6px;">You can earn a 30% commission:</p>
+        <p><strong>LV1 = 25%</strong></p>
+        <p><strong>LV2 = 3%</strong></p>
+        <p><strong>LV3 = 2%</strong></p>
+
+        <a href="https://t.me/kitkatofficalchannel" target="_blank" class="launch-telegram-btn">
+          <iconify-icon icon="logos:telegram" style="font-size:20px;"></iconify-icon>
+          <span>Official Telegram Channel</span>
+        </a>
+
+        <a href="https://t.me/KitKatPremiumSupport" target="_blank" class="launch-telegram-btn" style="background:#a30a0d;margin-top:8px;">
+          <iconify-icon icon="solar:headphones-round-sound-bold" style="font-size:20px;"></iconify-icon>
+          <span>24/7 Customer Support (@KitKatPremiumSupport)</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: BIND BANK / UPI ================= -->
+  <div class="app-modal-backdrop" id="bankModal">
+    <div class="app-modal-content" style="padding:22px;">
+      <button class="modal-close-round-btn" onclick="closeModal('bankModal')">&times;</button>
+      <h3 style="font-size:16px;font-weight:800;margin-bottom:16px;color:#111;">Bind Bank / UPI Account</h3>
+      <form id="bankForm" onsubmit="event.preventDefault(); saveBankDetails();">
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:700;color:#374151;">Account Holder Name</label>
+          <input type="text" id="bankAccountName" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:13.5px;margin-top:4px;" required>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:700;color:#374151;">UPI ID (For Fast Payout)</label>
+          <input type="text" id="bankUpiId" placeholder="e.g. 9876543210@paytm" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:13.5px;margin-top:4px;">
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:700;color:#374151;">Bank Account Number</label>
+          <input type="text" id="bankAccountNumber" placeholder="Optional if UPI provided" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:13.5px;margin-top:4px;">
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:700;color:#374151;">Bank IFSC Code</label>
+          <input type="text" id="bankIfsc" placeholder="e.g. SBIN0001234" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:13.5px;margin-top:4px;">
+        </div>
+        <button type="submit" class="btn-buy-now" style="margin-top:14px;">Save Account Details</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: MY ACTIVE PLANS / ORDERS ================= -->
+  <div class="app-modal-backdrop" id="ordersModal">
+    <div class="app-modal-content" style="padding:22px;">
+      <button class="modal-close-round-btn" onclick="closeModal('ordersModal')">&times;</button>
+      <h3 style="font-size:16px;font-weight:800;margin-bottom:16px;color:#111;">My Active Plans (Devices)</h3>
+      <div id="userOrdersListContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: TRANSACTION HISTORY ================= -->
+  <div class="app-modal-backdrop" id="historyModal">
+    <div class="app-modal-content" style="padding:22px;">
+      <button class="modal-close-round-btn" onclick="closeModal('historyModal')">&times;</button>
+      <h3 style="font-size:16px;font-weight:800;margin-bottom:16px;color:#111;" id="historyModalTitle">Transaction Records</h3>
+      <div id="historyListContainer" style="max-height:60vh;overflow-y:auto;">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: ABOUT US ================= -->
+  <div class="app-modal-backdrop" id="aboutModal">
+    <div class="app-modal-content" style="padding:22px;">
+      <button class="modal-close-round-btn" onclick="closeModal('aboutModal')">&times;</button>
+      <h3 style="font-size:16px;font-weight:800;margin-bottom:12px;color:var(--red-primary);">About KitKat Platform</h3>
+      <div style="font-size:13px;line-height:1.6;color:#374151;">
+        <p style="margin-bottom:10px;">
+          Welcome to the official <strong>KitKat Long-Term Earning Platform</strong>. We provide trusted daily income plans with instant UPI withdrawals.
+        </p>
+        <p style="margin-bottom:10px;">
+          <strong>Official Launch Date:</strong> 11 September 2026<br>
+          <strong>Customer Support:</strong> @KitKatPremiumSupport
+        </p>
+        <p>
+          Join our official channel for real-time payment proofs, withdrawal updates, and reward promotions!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div id="app-toast">Notification</div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
